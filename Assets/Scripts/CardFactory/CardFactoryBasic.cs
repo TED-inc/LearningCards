@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace TEDinc.LearningCards
 {
-    public abstract class CardsFactoryBasic : ICardsFactoryBasic
+    public abstract class CardFactoryBasic : ICardFactoryBasic
     {
         protected List<ICardBasic> cards;
 

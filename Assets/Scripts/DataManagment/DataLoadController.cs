@@ -72,7 +72,7 @@ namespace TEDinc.LearningCards
         private static string[] GenerateCardData(string name)
         {
             foreach (string[] line in dataFromFile)
-                if (line[0] == name)
+                if (line[(int)DataOrderCommonTypes.name] == name)
                     return line;
 
             Debug.LogError("No cards with name: " + name);

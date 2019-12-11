@@ -1,6 +1,6 @@
 ﻿namespace TEDinc.LearningCards
 {
-    public interface ICardsFactoryBasic
+    public interface ICardFactoryBasic
     {
         void AddCard(ICardBasic card);
         void SelectCard(ICardBasic card);

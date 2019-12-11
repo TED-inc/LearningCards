@@ -6,5 +6,6 @@ namespace TEDinc.LearningCards
     {
         Sprite GetImage();
         string GetField(string key);
+        void Interact();
     }
 }

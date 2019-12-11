@@ -13,7 +13,7 @@ namespace TEDinc.LearningCards
             return keys;
         }
 
-        public int GetValue(string key)
+        public int GetKeyIndex(string key)
         {
             for (int i = 0; i < keys.Length; i++)
                 if (keys[i] == key)
