@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
 namespace TEDinc.LearningCards
 {
     public abstract class CardFactoryBasic : ICardFactoryBasic
     {
-        protected List<ICardBasic> cards;
+        public List<ICardBasic> cards { get; protected set; }
 
-        public void AddCard(ICardBasic card)
+        public virtual void AddCard(ICardBasic card)
         {
             if (cards == null)
                 cards = new List<ICardBasic>();
@@ -15,14 +14,10 @@ namespace TEDinc.LearningCards
             cards.Add(card);
         }
 
-        public void SelectCard(ICardBasic card)
-        {
-            throw new System.NotImplementedException();
-        }
+        public abstract void SelectCard(ICardBasic card);
 
-        public void InteractWithSelectedCard()
-        {
-            throw new System.NotImplementedException();
-        }
+        public abstract void InteractWithCard(ICardBasic card);
+
+        public abstract void InteractWithSelectedCard();
     }
 }

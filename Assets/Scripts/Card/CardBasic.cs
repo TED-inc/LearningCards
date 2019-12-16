@@ -1,56 +1,133 @@
 ﻿using System;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using UnityEditor;
 
 namespace TEDinc.LearningCards
 {
-    public abstract class CardBasic : ICardBasic
+    [ExecuteInEditMode]
+    public abstract class CardBasic : MonoBehaviour, ICardBasic, IPointerClickHandler
     {
-        public readonly string name;
-        public readonly string dataFilePath;
+        public bool clicable = true;
+        public Image imageRenderer;
+        public bool valid { get; protected set; }
 
-        protected Sprite image;
+
+        public string identifier { get; protected set; }
+        public string dataFilePath { get; protected set; }
+        public ICardFactoryBasic cardFactory { get; protected set; }
+
+
+
+        protected Sprite sprite;
+
+
 
         public string GetField(string key)
         {
-            return DataLoadController.GetCardData(name, dataFilePath)[DataLoadController.dataOrderSO.GetKeyIndex(key)];
+            if (valid)
+                return GetField(DataLoadController.dataOrderSO.GetKeyIndex(key));
+            else 
+                return null;
         }
 
-        public Sprite GetImage()
+        public string GetField(int index)
         {
-            if (image == null)
-                {
-                    string[] data = DataLoadController.GetCardData(name, dataFilePath);
-                    if (ValidateDataBeforeSetAnImage(data))
-                        image = AssetDatabase.LoadAllAssetsAtPath(data[1])[Int32.Parse(data[2])] as Sprite;
-                }
-
-            return image;
-        }  
-
-        public abstract void Interact();
-
-
-
-        private bool ValidateDataBeforeSetAnImage(string[] data)
-        {
-            if (data == null)
-                Debug.LogError("No Data");
-            else if (!File.Exists(data[(int)DataOrderCommonTypes.imagePath]))
-                Debug.LogError("No image file");
+            if (valid)
+                return DataLoadController.GetCardDataField(identifier, dataFilePath, index);
             else
-                return true;
+                return null;
+        }
 
-            return false;
+        public string GetField(DataOrderCommonTypes dataOrder)
+        {
+            if (valid)
+                return DataLoadController.GetCardDataField(identifier, dataFilePath, dataOrder);
+            else
+                return null;
+        }
+
+        public string[] GetData()
+        {
+            return DataLoadController.GetCardData(identifier, dataFilePath);
+        }
+
+        public Sprite GetSprite()
+        {
+            if (sprite == null && valid)
+            {
+                string spritePath = GetField(DataOrderCommonTypes.spritePath);
+                int spritePathSubOrder = Int32.Parse(GetField(DataOrderCommonTypes.spritePathSubOrder));
+
+                if (!File.Exists(spritePath))
+                    Debug.LogError('[' + GetType().Name + "]\nNo sprite by path " + spritePath);
+                else
+                {
+                    try
+                    {
+                        sprite = AssetDatabase.LoadAllAssetsAtPath(spritePath)[spritePathSubOrder] as Sprite;
+                    }
+                    catch
+                    {
+                        Debug.LogError('[' + GetType().Name + "]\nNo subfiles by path " + spritePath + '[' + spritePathSubOrder + ']');
+                        sprite = null;
+                    }
+                }
+            }
+
+            return sprite;
+        }
+
+        public void Setup(string identifier, string dataFilePath, ICardFactoryBasic cardFactory)
+        {
+            this.identifier = identifier;
+            this.dataFilePath = dataFilePath;
+            this.cardFactory = cardFactory;
+            sprite = null;
+            if (CheckValidation())
+                Setup();
         }
 
 
 
-        public CardBasic(string name, string dataFilePath)
+        public virtual void Interact()
         {
-            this.name = name;
-            this.dataFilePath = dataFilePath;
+            if (cardFactory != null && valid)
+                cardFactory.InteractWithCard(this);
+        }
+
+        public virtual bool CheckValidation()
+        {
+            valid = GetData() != null;
+            return valid;
+        }
+
+        public virtual void OnPointerClick(PointerEventData eventData)
+        {
+            if (clicable)
+                Interact();
+        }
+
+
+
+        protected virtual void Setup()
+        {
+            if (imageRenderer != null)
+                imageRenderer.sprite = GetSprite();
+        }
+
+
+
+        public CardBasic()
+        {
+            valid = false;
+        }
+
+        public CardBasic(string identifier, string dataFilePath, ICardFactoryBasic cardFactory)
+        {
+            Setup(identifier, dataFilePath, cardFactory);
         }
     }
 }

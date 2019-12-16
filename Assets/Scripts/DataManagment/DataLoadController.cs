@@ -14,15 +14,30 @@ namespace TEDinc.LearningCards
 
 
 
-        public static string[] GetCardData(string name, string dataFilePath, bool forceLoad = false)
+        public static string[] GetCardData(string identifier, string dataFilePath, bool forceLoad = false)
         {
-            if (!ValidateParams(name, dataFilePath))
+            if (!ValidateParams(identifier, dataFilePath))
                 return null;
 
             if ((DataLoadController.dataFilePath != dataFilePath) || forceLoad)
                 LoadTextAsset(dataFilePath);
 
-            return GenerateCardData(name);
+            return GenerateCardData(identifier);
+        }
+
+        public static string GetCardDataField(string identifier, string dataFilePath, int index, bool forceLoad = false)
+        {
+            string[] data = GetCardData(identifier, dataFilePath, forceLoad);
+
+            if (data != null)
+                return data[index];
+
+            return null;
+        }
+
+        public static string GetCardDataField(string identifier, string dataFilePath, DataOrderCommonTypes dataOrder, bool forceLoad = false)
+        {
+            return GetCardDataField(identifier, dataFilePath, (int)dataOrder, forceLoad);
         }
 
 
@@ -32,9 +47,9 @@ namespace TEDinc.LearningCards
             if (dataOrderSO == null)
                 FindDataOrderSO();
             if (name == null || name == "")
-                Debug.LogError("Empty name is not allowed");
+                Debug.LogError('[' + typeof(DataLoadController).Name + "]\nEmpty name is not allowed");
             else if (!File.Exists(dataFilePath))
-                Debug.LogError("File path not exist\n" + dataFilePath);
+                Debug.LogError('[' + typeof(DataLoadController).Name + "]\nFile path not exist\n" + dataFilePath);
             else
                 return true;
 
@@ -56,7 +71,7 @@ namespace TEDinc.LearningCards
                 }
             }
 
-            Debug.LogError("DataOrderSO was not found");
+            Debug.LogError('[' + typeof(DataLoadController).Name + "]\nDataOrderSO was not found");
         }
 
         private static void LoadTextAsset(string dataFilePath)
@@ -72,10 +87,10 @@ namespace TEDinc.LearningCards
         private static string[] GenerateCardData(string name)
         {
             foreach (string[] line in dataFromFile)
-                if (line[(int)DataOrderCommonTypes.name] == name)
+                if (line[(int)DataOrderCommonTypes.identifier] == name)
                     return line;
 
-            Debug.LogError("No cards with name: " + name);
+            Debug.LogError('[' + typeof(DataLoadController).Name + "]\nNo cards with name: " + name);
             return null;
         }
     }

@@ -1,30 +1,31 @@
 ﻿using System;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEditor;
 
 namespace TEDinc.LearningCards
 {
     public class TestCardsDataManager : MonoBehaviour
     {
-        public string name;
-        public string path;
-        public SpriteRenderer spriteRenderer;
+        public string identifier;
+        public string path = "cccc";
+        public Image image;
         public UnityEngine.Object file;
 
         [ContextMenu("Test")]
         private void Test()
         {
-            string[] data = DataLoadController.GetCardData(name, path);
+            string[] data = DataLoadController.GetCardData(identifier, path);
             if (ValidateDataBeforeSetAnImage(data))
-                spriteRenderer.sprite = AssetDatabase.LoadAllAssetsAtPath(data[1])[Int32.Parse(data[2])] as Sprite;
+                image.sprite = AssetDatabase.LoadAllAssetsAtPath(data[1])[Int32.Parse(data[2])] as Sprite;
         }
 
         private bool ValidateDataBeforeSetAnImage(string[] data)
         {
             if (data == null)
                 Debug.LogError("No Data");
-            else if (!File.Exists(data[(int)DataOrderCommonTypes.imagePath]))
+            else if (!File.Exists(data[(int)DataOrderCommonTypes.spritePath]))
                 Debug.LogError("No image file");
             else
                 return true;

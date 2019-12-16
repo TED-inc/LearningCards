@@ -6,7 +6,7 @@ namespace TEDinc.LearningCards
     public class DataOrderSO : ScriptableObject
     {
         [SerializeField]
-        private string[] keys;
+        private string[] keys = null;
         
         public string[] GetKeys()
         {
@@ -19,17 +19,17 @@ namespace TEDinc.LearningCards
                 if (keys[i] == key)
                     return i;
 
-            Debug.LogError("No key \"" + key + "\" was found");
+            Debug.LogError('[' + GetType().ToString() + "]\nNo key \"" + key + "\" was found");
             return 0;
         }
     }
 
     public enum DataOrderCommonTypes
     {
-        name,
-        imagePath,
-        imagePathSubOrder,
-        translaton,
+        identifier,
+        spritePath,
+        spritePathSubOrder,
         word,
+        translation,
     }
 }
