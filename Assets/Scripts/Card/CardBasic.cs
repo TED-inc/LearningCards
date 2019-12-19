@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEditor;
+using TEDinc.Utils;
 
 namespace TEDinc.LearningCards
 {
@@ -18,7 +19,11 @@ namespace TEDinc.LearningCards
         public string identifier { get; protected set; }
         public string dataFilePath { get; protected set; }
         public ICardFactoryBasic cardFactory { get; protected set; }
-
+        [TypeConstraint(typeof(ICardInteractorBasic)), SerializeField]
+        private MonoBehaviour _cardInteractor;
+        public ICardInteractorBasic cardInteractor { 
+            get { return _cardInteractor as ICardInteractorBasic; } 
+            set { _cardInteractor = value as MonoBehaviour; } }
 
 
         protected Sprite sprite;

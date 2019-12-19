@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 
 namespace TEDinc.LearningCards
@@ -27,6 +28,8 @@ namespace TEDinc.LearningCards
 
             if (transltionLabel != null)
                 transltionLabel.text = GetField(DataOrderCommonTypes.translation);
+
+            Debug.LogWarning('[' + GetType().Name + "]\n" + Char.GetUnicodeCategory(wordLabel.text, 1));
         }
 
 
