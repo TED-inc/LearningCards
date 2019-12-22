@@ -13,19 +13,20 @@ namespace TEDinc.LearningCards
     {
         public bool clicable = true;
         public Image imageRenderer;
+
+
+
         public bool valid { get; protected set; }
-
-
         public string identifier { get; protected set; }
         public string dataFilePath { get; protected set; }
         public ICardFactoryBasic cardFactory { get; protected set; }
         [TypeConstraint(typeof(ICardInteractorBasic)), SerializeField]
         private MonoBehaviour _cardInteractor;
-        public ICardInteractorBasic cardInteractor { 
-            get { return _cardInteractor as ICardInteractorBasic; } 
-            set { _cardInteractor = value as MonoBehaviour; } }
-
-
+        public ICardInteractorBasic cardInteractor
+        {
+            get { return _cardInteractor as ICardInteractorBasic; }
+            set { _cardInteractor = value as MonoBehaviour; }
+        }
         protected Sprite sprite;
 
 
@@ -101,6 +102,8 @@ namespace TEDinc.LearningCards
         {
             if (cardFactory != null && valid)
                 cardFactory.InteractWithCard(this);
+            if (cardInteractor != null && valid)
+                cardInteractor.Interact();
         }
 
         public virtual bool CheckValidation()
@@ -121,6 +124,8 @@ namespace TEDinc.LearningCards
         {
             if (imageRenderer != null)
                 imageRenderer.sprite = GetSprite();
+            if (cardInteractor != null)
+                cardInteractor.Revert();
         }
 
 

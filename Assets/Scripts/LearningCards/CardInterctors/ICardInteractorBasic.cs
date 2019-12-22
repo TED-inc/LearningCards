@@ -3,6 +3,6 @@
     public interface ICardInteractorBasic
     {
         void Interact();
-        void Reset();
+        void Revert();
     }
 }

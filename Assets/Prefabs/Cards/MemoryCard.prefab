@@ -330,6 +330,7 @@ GameObject:
   - component: {fileID: 4098368980234788203}
   - component: {fileID: 4098368980234788197}
   - component: {fileID: 4098368980234788202}
+  - component: {fileID: 1285032124}
   m_Layer: 5
   m_Name: MemoryCard
   m_TagString: Untagged
@@ -374,6 +375,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clicable: 1
   imageRenderer: {fileID: 4794387933456806340}
+  _cardInteractor: {fileID: 1285032124}
   wordLabel: {fileID: 4098368980214870159}
   transltionLabel: {fileID: 4098368980301961264}
 --- !u!114 &4098368980234788197
@@ -407,6 +409,22 @@ MonoBehaviour:
   path: Assets/Data/Set0.csv
   image: {fileID: 0}
   file: {fileID: 4900000, guid: e63f1cdaca43a8144838250fbb052f4d, type: 3}
+--- !u!114 &1285032124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4098368980234788201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02e623dec3e5a234aaf496f2fc4e0875, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flippingTarget: {fileID: 4098368980234788200}
+  hidenState: {fileID: 4098368980214870157}
+  displayState: {fileID: 4098368980301961270}
+  duration: 0.5
 --- !u!1 &4098368980301961270
 GameObject:
   m_ObjectHideFlags: 0

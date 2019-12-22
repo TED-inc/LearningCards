@@ -13,6 +13,7 @@ namespace TEDinc.LearningCards
 
         public override void Interact()
         {
+            base.Interact();
             ///test
             Debug.Log('[' + GetType().Name + "]\nClick");
         }
